@@ -3,6 +3,14 @@ from ttkbootstrap.constants import *
 import ttkbootstrap as tkb
 import cv2
 from PIL import Image,ImageTk
+import random 
+from itertools import count
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotib.animation import FuncAnimation
+
+
+
 
 #tkinter window stats
 window = tk.Tk()
@@ -85,6 +93,35 @@ boxes = tkb.Button(tab1,text='Boxes',width=10)
 boxes.place(x=5,y=68)
 chair = tkb.Button(tab1,text='Chair',width=10,)
 chair.place(x=5,y=101)
+
+#graph for cpu temp
+
+plt.style.use('fivethirtyeight')
+
+x_vals=[]
+y_vals=[]
+
+index=count()
+
+def animate(i):
+    x_vals.append(next(index))
+    y_vals.append(random.randint(0,5))
+
+   
+    plt.cla()
+    plt.plot(x_vals,y_vals)
+
+ani=FuncAnimation(plt.gcf(),animate,interval=1000)
+
+
+
+
+
+plt.tight_layout()
+plt.xlabel('time')
+plt.ylabel('temp')
+plt.show()
+
 
 
 
