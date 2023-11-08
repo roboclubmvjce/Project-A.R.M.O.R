@@ -23,8 +23,8 @@ def update_camera():
     _, frame = cap.read()
     if _:
         # Resize the frame to the desired width and height
-        desired_width = 1400
-        desired_height = 450
+        desired_width = 640
+        desired_height = 480
         frame = cv2.resize(frame, (desired_width, desired_height))
 
         # Convert the frame to RGB format for tkinter
