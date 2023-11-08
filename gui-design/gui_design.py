@@ -38,5 +38,26 @@ def update_camera():
         # Call the function recursively after 10 milliseconds to update the camera feed
         label.after(10, update_camera)
 
+notebook = tkb.Notebook(window)
+notebook.pack(expand=True,fill = tkb.BOTH)
+tab1 = tkb.Frame(notebook)
+tab2 = tkb.Frame(notebook)
+tab3 = tkb.Frame(notebook)
+
+notebook.add(tab1, text='Img. Proc.')
+notebook.add(tab2, text='Sensor Data')
+notebook.add(tab3, text='Extras')
+
+face = tkb.Button(tab1,text='Face',width=10)
+face.place(x=5,y=2)
+person = tkb.Button(tab1,text='Person',width=10)
+person.place(x=5,y=35)
+boxes = tkb.Button(tab1,text='Boxes',width=10)
+boxes.place(x=5,y=68)
+chair = tkb.Button(tab1,text='Chair',width=10,)
+chair.place(x=5,y=101)
+
+
+
 update_camera()
 window.mainloop()
