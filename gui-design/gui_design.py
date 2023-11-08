@@ -38,6 +38,35 @@ def update_camera():
         # Call the function recursively after 10 milliseconds to update the camera feed
         label.after(10, update_camera)
 
+#Menu
+menubar = tkb.Menu(window)
+window.config(menu=menubar)
+file_menu = tkb.Menu(menubar,tearoff=0)
+file_menu.add_command(label="New")
+file_menu.add_command(label="Open")
+file_menu.add_separator()
+file_menu.add_command(label="Exit", command=window.quit)
+
+camera_menu=tkb.Menu(menubar,tearoff=0)
+camera_menu.add_command(label="RGB")
+camera_menu.add_command(label="Depth")
+
+option_menu=tkb.Menu(menubar,tearoff=0)
+option_menu.add_command(label="Exit")
+
+edit_menu = tkb.Menu(menubar, tearoff=0)
+edit_menu.add_command(label="Cut")
+edit_menu.add_command(label="Copy")
+edit_menu.add_command(label="Paste")
+
+
+menubar.add_cascade(label="File", menu=file_menu)
+menubar.add_cascade(label="Camera",menu=camera_menu)
+menubar.add_cascade(label="Option",menu=option_menu)
+menubar.add_cascade(label="Edit", menu=edit_menu)
+
+
+#Tabs
 notebook = tkb.Notebook(window)
 notebook.pack(expand=True,fill = tkb.BOTH)
 tab1 = tkb.Frame(notebook)
