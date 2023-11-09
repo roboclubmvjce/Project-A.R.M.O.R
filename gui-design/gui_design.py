@@ -48,8 +48,8 @@ def face_proc(frame):
         minNeighbors = 5)
     if face_var.get() == 1:
         for x,y,w,h in face:
-                frame = cv2.rectangle(frame,(x,y),(x+w,y+h),green,3) # THis draws boxes around detected faces
-                cv2.putText(frame,str("face"), (x,y-5),cv2.FONT_HERSHEY_PLAIN, 2,green,2)
+                frame = cv2.rectangle(frame,(x,y),(x+w,y+h),green,3) # This draws boxes around detected faces
+                cv2.putText(frame,str("Face"), (x,y-5),cv2.FONT_HERSHEY_PLAIN, 2,green,2)
 
 #Menu
 menubar = tkb.Menu(window)
@@ -79,7 +79,7 @@ menubar.add_cascade(label="Option",menu=option_menu)
 menubar.add_cascade(label="Edit", menu=edit_menu)
 
 #Tabs
-notebook = tkb.Notebook(window,bootstyle ='info')
+notebook = tkb.Notebook(window,bootstyle ='danger')
 notebook.pack(expand=True,fill = tkb.BOTH)
 tab1 = tkb.Frame(notebook)
 tab2 = tkb.Frame(notebook)
@@ -97,25 +97,33 @@ face_var = IntVar()
 person_var = IntVar()
 boxes_var = IntVar()
 chair_var = IntVar()
-robot_var = IntVar()
+vehicle_var = IntVar()
+All_var = IntVar()
 
-face = tkb.Label(tab1_frame,text='Face',font=('Helvetica', 18),width=12)
+face = tkb.Label(tab1_frame,text='Face',font=('Helvetica', 18),bootstyle='danger, inverse',width=12)
 face.place(x=10,y=2)
-face_check = tkb.Checkbutton(tab1_frame,bootstyle ='info ,square-toggle',onvalue=1,offvalue=0,variable=face_var,)
+face_check = tkb.Checkbutton(tab1_frame,bootstyle ='info ,round-toggle',onvalue=1,offvalue=0,variable=face_var,)
 face_check.place(x=120,y=10)
-person = tkb.Label(tab1_frame,text='Person',font=('Helvetica', 18),width=12)
+person = tkb.Label(tab1_frame,text='Person',font=('Helvetica', 18),bootstyle='danger, inverse',width=12)
 person.place(x=10,y=35)
-person_check = tkb.Checkbutton(tab1_frame,bootstyle ='info ,square-toggle',onvalue=1,offvalue=0,variable=person_var)
+person_check = tkb.Checkbutton(tab1_frame,bootstyle ='info ,round-toggle',onvalue=1,offvalue=0,variable=person_var)
 person_check.place(x=120,y=43)
-boxes = tkb.Label(tab1_frame,text='Boxes',font=('Helvetica', 18),width=12)
+boxes = tkb.Label(tab1_frame,text='Boxes',font=('Helvetica', 18),bootstyle='danger, inverse',width=12)
 boxes.place(x=10,y=68)
-boxes_check = tkb.Checkbutton(tab1_frame,bootstyle ='info ,square-toggle',onvalue=1,offvalue=0,variable=boxes_var)
+boxes_check = tkb.Checkbutton(tab1_frame,bootstyle ='info ,round-toggle',onvalue=1,offvalue=0,variable=boxes_var)
 boxes_check.place(x=120,y=76)
-chair = tkb.Label(tab1_frame,text='Chair',font=('Helvetica', 18),width=12)
+chair = tkb.Label(tab1_frame,text='Chair',font=('Helvetica', 18),bootstyle='danger, inverse',width=12)
 chair.place(x=10,y=101)
-chair_check = tkb.Checkbutton(tab1_frame,bootstyle ='info ,square-toggle',onvalue=1,offvalue=0,variable=chair_var)
+chair_check = tkb.Checkbutton(tab1_frame,bootstyle ='info ,round-toggle',onvalue=1,offvalue=0,variable=chair_var)
 chair_check.place(x=120,y=109)
-
+vehicle = tkb.Label(tab1_frame,text='Vehicle',font=('Helvetica', 18),bootstyle='danger, inverse',width=12)
+vehicle.place(x=10,y=134)
+vehicle_check = tkb.Checkbutton(tab1_frame,bootstyle ='info ,round-toggle',onvalue=1,offvalue=0,variable=vehicle_var)
+vehicle_check.place(x=120,y=142)
+EnableAll = tkb.Label(tab1_frame,text='Enable All',font=('Helvetica', 16),bootstyle='danger, inverse',width=13)
+EnableAll.place(x=10,y=167)
+EnableAll_check = tkb.Checkbutton(tab1_frame,bootstyle ='success',onvalue=1,offvalue=0,variable=All_var)
+EnableAll_check.place(x=125,y=175)
 
 
 update_camera()
