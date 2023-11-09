@@ -1,15 +1,12 @@
 from tkinter import *
 from ttkbootstrap.constants import *
 import ttkbootstrap as tkb
-import cv2
 from PIL import Image,ImageTk
-import time , os 
+import time , os , random , cv2
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import random
 import matplotlib.animation as animation
 import matplotlib as plt
-
 
 #tkinter window stats
 window = Tk()
@@ -20,9 +17,13 @@ window.geometry('%dx%d'%(width,height)) #dimensions of window
 style = tkb.Style('darkly') #window theme
 window.bind('<Escape>', lambda e: window.quit())
 x_position = (width - 1400) // 2
-label =tkb.Label(window)
-label.pack(padx=x_position,pady=0)
+frame = tkb.Frame(window, bootstyle='darkly' ,border=5,borderwidth=5)
+frame.pack(padx=x_position,pady=0)
+label_1 =tkb.Label(frame)
+label_1.pack(side='left')
 
+
+#To find location of files
 def file_loc(filename):
     for root, _, files in os.walk('.'):
         if filename in files:
@@ -34,6 +35,7 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fronta
 yolo_weights = file_loc("yolov4-tiny.weights")
 yolo_tiny_cfg = file_loc("yolov4-tiny.cfg")
 classes_txt = file_loc("classes.txt")
+no_sig = file_loc("no_signal.png")
 net=cv2.dnn.readNet(yolo_weights,yolo_tiny_cfg)
 model=cv2.dnn_DetectionModel(net)
 model.setInputParams(size=(320,320),scale=1/255)
@@ -42,12 +44,13 @@ prevFrameTime = 0
 currentFrameTime = 0
 green = (0,255,0)
 
+# label_2 =tkb.Label(frame,image="dependencies/no_signal.png")
+# label_2.pack(side='right')
+
 with open(classes_txt,"r") as file_object:
     for class_name in file_object.readlines():
         class_name=class_name.strip()
         classes.append(class_name)
-
-
 
 def update_camera():
     global cap
@@ -61,20 +64,26 @@ def update_camera():
         # Resize the frame to the desired width and height
         desired_width = 640
         desired_height = 480
-        frame = cv2.resize(frame, (desired_width, desired_height))    
+        frame = cv2.resize(frame, (desired_width, desired_height))  
+         
         face_proc(frame)
         person_proc(frame)
         all_proc(frame)
         #To get FPS
-        cv2.putText(frame, f"FPS: {int(fps)}", (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+        cv2.putText(frame, f"FPS: {int(fps)}", (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2) 
         # Convert the frame to RGB format for tkinter
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         # Create a tkinter-compatible photo image
         photo = ImageTk.PhotoImage(image=Image.fromarray(frame))
-        label.config(image=photo)
-        label.image = photo
+        label_1.config(image=photo)
+        label_1.image = photo
         # Call the function recursively after 10 milliseconds to update the camera feed
-        label.after(5, update_camera)
+        # label_2.after(5, update_camera)
+        # Call the function recursively after 10 milliseconds to update the camera feed
+        label_1.after(10, update_camera)
+
+        
+
 
 # Facial Recognition
 def face_proc(frame):
@@ -86,6 +95,7 @@ def face_proc(frame):
                 frame = cv2.rectangle(frame,(x,y),(x+w,y+h),green,3) # This draws boxes around detected faces
                 cv2.putText(frame,str("Face"), (x,y-5),cv2.FONT_HERSHEY_PLAIN, 2,green,2)
 
+# Person Recognition
 def person_proc(frame):
     if person_var.get()==1:
         (class_ids, scores, bboxes) = model.detect(frame)
@@ -96,6 +106,7 @@ def person_proc(frame):
                 cv2.putText(frame,class_name, (x,y-10),cv2.FONT_HERSHEY_PLAIN,2,(255,0,0),2)
                 cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),3)
 
+# For all recognition to be enabled
 def all_proc(frame):
     if all_var.get()==1:
         (class_ids, scores, bboxes) = model.detect(frame)
@@ -195,11 +206,36 @@ ax1 = fig.add_subplot(111)
 
 # Create FigureCanvasTkAgg widgets to display the graphs in the tab
 canvas = FigureCanvasTkAgg(fig, master=tab2)
-canvas.get_tk_widget().place(x=10,y=5)
+canvas.get_tk_widget().place(x=550,y=10)
+
+pi_frame = tkb.Frame(tab2, bootstyle='darkly' ,border=5,borderwidth=5)
+pi_frame.place(x=20,y=10,width = 450,height=300)
+
+pi_label=Label(pi_frame,text='PI Server :',font=('Helvetica', 18))
+pi_label.place(x=15,y=15)
+
+cpu_temp_meter = tkb.Meter(pi_frame,bootstyle='danger',subtext='CPU Temp',textright='%',metertype='semi',amounttotal=100,amountused=49,interactive=True)
+cpu_temp_meter.place(x=15,y=50)
+
+cpu_usage_meter = tkb.Meter(pi_frame,bootstyle='danger',subtext='CPU Usage',textright='%',metertype='semi',amounttotal=100,amountused=29,interactive=True)
+cpu_usage_meter.place(x=225,y=50)
+
+client_frame = tkb.Frame(tab2, bootstyle='darkly' ,border=5,borderwidth=5)
+client_frame.place(x=1000,y=10,width = 450,height=300)
+
+client_label=Label(client_frame,text='Client System :',font=('Helvetica', 18))
+client_label.place(x=15,y=15)
+
+cpu_temp_meter = tkb.Meter(client_frame,bootstyle='info',subtext='CPU Temp',textright='%',metertype='semi',amounttotal=100,amountused=49,interactive=True)
+cpu_temp_meter.place(x=15,y=50)
+
+cpu_usage_meter = tkb.Meter(client_frame,bootstyle='info',subtext='CPU Usage',textright='%',metertype='semi',amounttotal=100,amountused=29,interactive=True)
+cpu_usage_meter.place(x=225,y=50)
 
 # Create an animation to update the graphs
-ani = animation.FuncAnimation(fig, update_graphs, interval=1000)
+ani = animation.FuncAnimation(fig, update_graphs, interval=500)
 
 
 update_camera()
+
 window.mainloop()

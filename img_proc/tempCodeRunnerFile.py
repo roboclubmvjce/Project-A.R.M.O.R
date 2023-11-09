@@ -1,1 +1,0 @@
-model.setInputParams(size=(320,320),scale=1/255)
