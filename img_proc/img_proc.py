@@ -2,6 +2,7 @@ from tkinter import *
 from ttkbootstrap.constants import *
 import ttkbootstrap as tkb
 from PIL import Image,ImageTk
+Image.CUBIC = Image.BICUBIC
 import time , os , random , cv2
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -77,8 +78,6 @@ def update_camera():
         photo = ImageTk.PhotoImage(image=Image.fromarray(frame))
         label_1.config(image=photo)
         label_1.image = photo
-        # Call the function recursively after 10 milliseconds to update the camera feed
-        # label_2.after(5, update_camera)
         # Call the function recursively after 10 milliseconds to update the camera feed
         label_1.after(10, update_camera)
 
